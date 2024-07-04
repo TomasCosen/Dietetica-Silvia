@@ -5,12 +5,14 @@ import {
   getCart,
   insertProductCart,
   createTicket,
+  getAllCarts,
 } from "../controllers/cartController.js";
 
 const cartRouter = Router();
 
 cartRouter.post("/", createCart);
 
+cartRouter.get("/", getAllCarts);
 cartRouter.get("/:cid", getCart);
 
 cartRouter.post(

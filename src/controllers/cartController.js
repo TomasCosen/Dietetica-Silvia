@@ -2,6 +2,16 @@ import cartModel from "../models/cart.js";
 import productModel from "../models/product.js";
 import ticketModel from "../models/ticket.js";
 
+export const getAllCarts = async (req, res) => {
+  try {
+    const carts = await cartModel.find();
+    res.status(200).send(carts);
+  } catch (error) {
+    res
+      .status(500)
+      .send(`Error interno del servidor al consultar carritos: ${error}`);
+  }
+};
 export const getCart = async (req, res) => {
   try {
     const cartId = req.params.cid;
