@@ -1,0 +1,28 @@
+<div class="container">
+
+  <h1 class="mt-5">Productos</h1>
+
+  {{#if mostrarProductos}}
+    <div class="row mt-4">
+      {{#each productos}}
+        <div class="col-md-6 col-lg-4 mb-4">
+          <div class="card">
+            <img
+              src="{{this.thumbnail}}"
+              class="card-img-top product-img"
+              alt="Imagen de {{this.title}}"
+            />
+            <div class="card-body">
+              <h5 class="card-title">{{this.title}}</h5>
+              <p class="card-text">{{this.description}}</p>
+              <p class="card-text">Precio: ${{this.price}}</p>
+              <p class="card-text">Stock: {{this.stock}}</p>
+            </div>
+          </div>
+        </div>
+      {{/each}}
+    </div>
+  {{else}}
+    <p>No se pueden mostrar los productos</p>
+  {{/if}}
+</div>
