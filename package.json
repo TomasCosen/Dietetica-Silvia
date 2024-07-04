@@ -6,7 +6,7 @@
   "main": "ProductManager.js",
   "scripts": {
     "dev": "node --watch src/index.js",
-    "start": "node src/app.js",
+    "start": "node src/index.js",
     "testmocha": "mocha test/Products.test.js",
     "testchai": "mocha test/ProductChai.test.js",
     "testproducts": "mocha test/supertestProducts.test.js",
