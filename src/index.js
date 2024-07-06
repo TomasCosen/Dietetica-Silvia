@@ -7,7 +7,8 @@ import cookieParser from "cookie-parser";
 import messageModel from "./models/messages.js";
 import indexRouter from "./routes/indexRouter.js";
 import initializePassport from "./config/passport/passport.js";
-import varenv from './dotenv.js'
+import varenv from "./dotenv.js";
+import cors from "cors";
 import { Server } from "socket.io";
 import { engine } from "express-handlebars";
 import { __dirname } from "./path.js";
@@ -15,6 +16,16 @@ import { __dirname } from "./path.js";
 //declaraciones
 const app = express();
 const PORT = varenv.port;
+
+//confirgurar cors
+const corsOptions = {
+  origin: "http://localhost:3000",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+  credentials: true,
+  optionsSuccessStatus: 204,
+};
+
+app.use(cors(corsOptions));
 
 //server
 const server = app.listen(PORT, () => {
