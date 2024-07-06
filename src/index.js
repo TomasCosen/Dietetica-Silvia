@@ -20,6 +20,7 @@ const PORT = varenv.port;
 const allowedOrigins = [
   "http://localhost:3000",
   "https://proyecto-final-cosentino-github-io.vercel.app/",
+  "https://proyecto-final-cosentino-github-io.vercel.app/:1",
 ];
 //confirgurar cors
 const corsOptions = {
