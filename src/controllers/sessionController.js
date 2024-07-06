@@ -34,13 +34,16 @@ export const register = async (req, res) => {
   }
 };
 export const logout = async (req, res) => {
-  req.session.destroy(function (e) {
-    if (e) {
-      console.log(e);
-    } else {
-      res.status(200).redirect("/");
-    }
-  });
+  if (req.session) {
+    req.session.destroy((err) => {
+      if (err) {
+        console.error("Error al destruir la sesión:", err);
+        res.status(500).send("Error al cerrar la sesión");
+      } else {
+        res.status(200).redirect("/");
+      }
+    });
+  }
 };
 export const current = async (req, res) => {
   try {

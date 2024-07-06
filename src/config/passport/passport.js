@@ -6,6 +6,7 @@ import { userModel } from "../../models/user.js";
 import { createHash, validatePassword } from "../../utils/bcrypt.js";
 import { strategyJWT } from "./strategies/jwtStrategy.js";
 import varenv from "../../dotenv.js";
+import cartModel from "../../models/cart.js";
 
 //Passport trabaje con mas de un middlewares
 
@@ -25,12 +26,16 @@ const initializePassport = () => {
           if (findUser) {
             return done(null, false);
           } else {
+            const newCart = new cartModel();
+            await newCart.save();
+
             const user = await userModel.create({
               first_name: first_name,
               last_name: last_name,
               email: email,
               age: age,
               password: createHash(password),
+              cart: newCart._id,
             });
             return done(null, user);
           }
@@ -72,8 +77,6 @@ const initializePassport = () => {
       }
     )
   );
-
-  
 
   passport.use(
     "github",
