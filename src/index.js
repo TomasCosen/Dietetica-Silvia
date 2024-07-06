@@ -21,6 +21,10 @@ const allowedOrigins = [
   "http://localhost:3000",
   "https://proyecto-final-cosentino-github-io.vercel.app/",
 ];
+app.use((req, res, next) => {
+  console.log("Origen de la solicitud:", req.headers.origin);
+  next();
+});
 //confirgurar cors
 const corsOptions = {
   origin: function (origin, callback) {
