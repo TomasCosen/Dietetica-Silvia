@@ -17,28 +17,14 @@ import { __dirname } from "./path.js";
 const app = express();
 const PORT = varenv.port;
 
-const allowedOrigins = [
-  "http://localhost:3000",
-  "https://proyecto-final-cosentino-github-io.vercel.app",
-];
-app.use((req, res, next) => {
-  console.log("Origen de la solicitud:", req.headers.origin);
-  next();
-});
 //confirgurar cors
 const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, true);
-    } else {
-      callback(new Error("No permitido por CORS"));
-    }
-  },
+  origin: "*",
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
 };
+
 app.use(cors(corsOptions));
 
 //server
