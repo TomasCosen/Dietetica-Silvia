@@ -16,10 +16,13 @@ import { __dirname } from "./path.js";
 //declaraciones
 const app = express();
 const PORT = varenv.port;
-
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://proyecto-final-cosentino-github-io.vercel.app",
+];
 //confirgurar cors
 const corsOptions = {
-  origin: "*",
+  origin: allowedOrigins,
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
