@@ -7,6 +7,7 @@ import {
   updateProduct,
   deleteProduct,
 } from "../controllers/productsController.js";
+import { authRequired } from "../config/validateToken.js";
 
 const productsRouter = Router();
 
@@ -14,22 +15,10 @@ productsRouter.get("/", getProducts);
 
 productsRouter.get("/:pid", getProduct);
 
-productsRouter.post(
-  "/",
-  passport.authenticate("jwt", { session: false }),
-  createProduct
-);
+productsRouter.post("/", authRequired, createProduct);
 
-productsRouter.put(
-  "/:pid",
-  passport.authenticate("jwt", { session: false }),
-  updateProduct
-);
+productsRouter.put("/:pid", authRequired, updateProduct);
 
-productsRouter.delete(
-  "/:pid",
-  passport.authenticate("jwt", { session: false }),
-  deleteProduct
-);
+productsRouter.delete("/:pid", authRequired, deleteProduct);
 
 export default productsRouter;

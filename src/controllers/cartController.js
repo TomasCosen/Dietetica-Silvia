@@ -14,8 +14,12 @@ export const getAllCarts = async (req, res) => {
 };
 export const getCart = async (req, res) => {
   try {
-    const cartId = req.params.cid;
-    const cart = await cartModel.findOne({ _id: cartId });
+    const cartId = req.user.cart;
+    const cart = await cartModel.findById(cartId).populate("products.id_prod");
+    if (!cart) {
+      return res.status(404).send({ message: "Cart not found" });
+    }
+    console.log(cart);
     res.status(200).send(cart);
   } catch (error) {
     res
@@ -37,7 +41,7 @@ export const createCart = async (req, res) => {
 
 export const insertProductCart = async (req, res) => {
   try {
-    if (req.user.rol == "user") {
+    if (req.user.user.rol == "admin") {
       const cartId = req.params.cid;
       const productId = req.params.pid;
       const { quantity } = req.body;
@@ -53,7 +57,9 @@ export const insertProductCart = async (req, res) => {
       } else {
         cart.products.push({ id_prod: productId, quantity: quantity });
       }
-      const mensaje = await cartModel.findByIdAndUpdate(cartId, cart);
+      const mensaje = await cartModel.findByIdAndUpdate(cartId, cart, {
+        new: true,
+      });
       res.status(200).send(mensaje);
     } else {
       res.status(403).send("Usuario no autorizado");
@@ -62,6 +68,24 @@ export const insertProductCart = async (req, res) => {
     res
       .status(500)
       .send(`Error interno del servidor al crear producto: ${error}`);
+  }
+};
+
+export const updateCart = async (req, res) => {
+  const { cid } = req.params;
+  const { products } = req.body;
+  try {
+    const updatedCart = await cartModel.findByIdAndUpdate(
+      cid,
+      { $set: { products } },
+      { new: true }
+    );
+    if (!updatedCart) {
+      return res.status(404).send({ message: "Cart Not found" });
+    }
+    res.status(200).send({ message: "cart Updated successfully", updatedCart });
+  } catch (e) {
+    res.staus(500).send({ message: "Error updating cart", e });
   }
 };
 
@@ -78,14 +102,13 @@ export const createTicket = async (req, res) => {
         }
       });
       if (prodSinStock.length == 0) {
-        const totalPrice = cart.products.reduce(
-          (a, b) => a.id_prod.price * a.quantity + b.id_prod.price * b.quantity,
-          0
-        );
+        const totalPrice = cart.products.reduce((total, prod) => {
+          return total + prod.id_prod.price * prod.quantity;
+        }, 0);
         const newTicket = await ticketModel.create({
           code: crypto.randomUUID(),
-          purchaser: req.user.email,
           amount: totalPrice,
+          purchaser: req.user.user.email,
           products: cart.products,
         });
         cart.products.forEach(async (prod) => {

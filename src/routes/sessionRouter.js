@@ -8,6 +8,7 @@ import {
   current,
   testJWT,
 } from "../controllers/sessionController.js";
+import { authRequired } from "../config/validateToken.js";
 
 const sessionRouter = Router();
 
@@ -15,7 +16,7 @@ sessionRouter.post("/login", passport.authenticate("login"), login);
 
 sessionRouter.post("/register", passport.authenticate("register"), register);
 
-sessionRouter.get("/current", passport.authenticate("jwt"), current);
+sessionRouter.get("/current", authRequired, current);
 
 sessionRouter.get(
   "/github",
@@ -28,7 +29,7 @@ sessionRouter.get(
   sessionGithub
 );
 
-sessionRouter.get("/logout", logout);
+sessionRouter.post("/logout", logout);
 
 sessionRouter.get(
   "/testJWT",

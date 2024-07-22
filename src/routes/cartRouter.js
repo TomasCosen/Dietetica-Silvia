@@ -6,25 +6,20 @@ import {
   insertProductCart,
   createTicket,
   getAllCarts,
+  updateCart,
 } from "../controllers/cartController.js";
+import { authRequired } from "../config/validateToken.js";
 
 const cartRouter = Router();
 
-cartRouter.post("/", createCart);
-
 cartRouter.get("/", getAllCarts);
+cartRouter.post("/", createCart);
 cartRouter.get("/:cid", getCart);
 
-cartRouter.post(
-  "/:cid/:pid",
-  passport.authenticate("jwt", { session: false }),
-  insertProductCart
-);
+cartRouter.post("/:cid/:pid", authRequired, insertProductCart);
 
-cartRouter.get(
-  "/purchase/:cid",
-  passport.authenticate("jwt", { session: false }),
-  createTicket
-);
+cartRouter.put("/:cid", authRequired, updateCart);
+
+cartRouter.get("/purchase/:cid", authRequired, createTicket);
 
 export default cartRouter;

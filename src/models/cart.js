@@ -19,8 +19,13 @@ const cartSchema = new Schema({
   },
 });
 
-cartSchema.pre("findOne", function () {
+cartSchema.pre("findOne", function (next) {
   this.populate("products.id_prod");
+  next();
+});
+cartSchema.pre("findById", function (next) {
+  this.populate("products.id_prod");
+  next();
 });
 
 const cartModel = model("carts", cartSchema);

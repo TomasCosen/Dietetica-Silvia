@@ -58,7 +58,7 @@ app.use(
     saveUninitialized: true,
   })
 );
-app.use(cookieParser(varenv.cookies_secret));
+app.use(cookieParser());
 app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 app.set("views", __dirname + "/views");
@@ -70,8 +70,8 @@ app.use(passport.session());
 
 app.use("/", indexRouter);
 
-//Routes Cookies
-app.get("/setCookie", (req, res) => {
+
+/* app.get("/setCookie", (req, res) => {
   res
     .cookie("CookieCookie", "Esto es una cookie :)", {
       maxAge: 3000000,
@@ -85,11 +85,11 @@ app.get("/getCookie", (req, res) => {
 app.get("/deleteCookie", (req, res) => {
   res.clearCookie("CookieCookie").send("Cookie eliminada");
   //res.cookie('CookieCokie', '', { expires: new Date(0) })
-});
+}); */
 
-//sesion Routes
 
-app.get("/session", (req, res) => {
+
+/* app.get("/session", (req, res) => {
   console.log(req.session);
   if (req.session.counter) {
     req.session.counter++;
@@ -124,4 +124,4 @@ io.on("connection", (socket) => {
       io.emit("mensajeLogs", e);
     }
   });
-});
+}); */

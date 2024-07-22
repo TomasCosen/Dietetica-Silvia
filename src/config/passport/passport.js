@@ -62,9 +62,9 @@ const initializePassport = () => {
     "login",
     new localStrategy(
       { usernameField: "email" },
-      async (username, password, done) => {
+      async (email, password, done) => {
         try {
-          const user = await userModel.findOne({ email: username }).lean();
+          const user = await userModel.findOne({ email: email }).lean();
 
           if (user && validatePassword(password, user.password)) {
             return done(null, user);
