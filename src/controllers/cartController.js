@@ -1,5 +1,5 @@
 import cartModel from "../models/cart.js";
-import productModel from "../models/product.js";
+import productModel from "../models/products.js";
 import ticketModel from "../models/ticket.js";
 
 export const getAllCarts = async (req, res) => {
@@ -15,7 +15,10 @@ export const getAllCarts = async (req, res) => {
 export const getCart = async (req, res) => {
   try {
     const cartId = req.user.cart;
-    const cart = await cartModel.findById(cartId).populate("products.id_prod");
+    const cart = await cartModel.findById(cartId).populate({
+      path: "products.id_prod",
+      model: "products",
+    });
     if (!cart) {
       return res.status(404).send({ message: "Cart not found" });
     }
