@@ -35,22 +35,10 @@ export const register = async (req, res) => {
     res.status(500).send("Error al registrar usuario");
   }
 };
-export const logout = (req, res) => {
-  /* if (req.session) {
-    req.session.destroy((err) => {
-      if (err) {
-        console.error("Error al destruir la sesión:", err);
-        res.status(500).send("Error al cerrar la sesión");
-      } else {
-        res
-          .status(200)
-          .cookie("token", "", {
-            expires: new Date(0),
-          })
-          .redirect("/");
-      }
-    });
-  } */
+export const logout = async (req, res) => {
+  const user = await userModel.findOne({ email: req.session.user.email });
+  user.last_connection = new Date();
+  await user.save();
   res.cookie("token", "", {
     httpOnly: true,
     secure: true,
