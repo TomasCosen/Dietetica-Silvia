@@ -2,7 +2,9 @@ import { userModel } from "../models/user.js";
 
 export const getUsers = async (req, res) => {
   try {
-    const users = await userModel.find();
+    const users = await userModel
+      .find()
+      .select("first_name last_name email rol");
     res.status(200).send(users);
   } catch (e) {
     res.status(500).send("Error al consultar usuarios: ", e);
@@ -34,6 +36,4 @@ export const sendDocuments = async (req, res) => {
   }
 };
 
-export const imagesProds = (req, res) => {
-  
-}
+export const imagesProds = (req, res) => {};
